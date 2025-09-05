@@ -22,6 +22,43 @@
 
 ---
 
+### Решение:
+
+1-3. Дописал еще один play, который устанавливает LightHouse. Использую модули get_url, template, yum, service, file. Происходит установка и конфигурирование веб-сервера Nginx, установка и конфигурирование LightHouse, запуск служб Nginx и LightHouse.
+
+4. Подготовил свой inventory-файл prod.yml:
+
+```bash
+---
+clickhouse:
+  hosts:
+    centos7-1:
+      ansible_host: 158.160.99.241
+vector:
+  hosts:
+    centos7-2:
+      ansible_host: 158.160.62.168
+lighthouse:
+  hosts:
+    centos7-3:
+      ansible_host: 158.160.97.145
+```
+5. Запустил ansible-lint site.yml. Были ошибки в использовании старых наименований модулей, отсутствии прав на скачиваемые или создаваемые файлы. Ошибки исправлены.
+
+6. Запустил playbook с флагом --check. Выполнение playbook завершилось с ошибкой, т.к. этот флаг не вносит изменения в системы, а выполнение playbook требует скачивания и установки пакетов приложений.
+
+7. Запускаю playbook на prod.yml окружении с флагом --diff. Изменения в систему внесены:
+
+![ans_08_03](https://github.com/Qshar1408/ans_08_03/blob/main/img/ans_08_03_001.png)
+
+8. Повторно запускаю playbook с флагом --diff. Playbook идемпотентен, изменения связаны с перезапуском сервиса Vector:
+
+![ans_08_03](https://github.com/Qshar1408/ans_08_03/blob/main/img/ans_08_03_002.png)
+
+9. Подготовил README.md-файл по своему playbook:
+
+#### [Ссылка на README]((https://github.com/Qshar1408/ans_08_03/blob/main/src/playbook/README.md)
+
 ### Как оформить решение задания
 
 Выполненное домашнее задание пришлите в виде ссылки на .md-файл в вашем репозитории.
